@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LiteChatbot</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"></script>
+</head>
+
+<body>
+
+    <!-- ================= AUTH SCREEN ================= -->
+
+    <div id="authScreen" class="auth-screen">
+
+        <div class="auth-container">
+
+            <div class="auth-visual">
+
+                <div class="visual-content">
+
+                    <div class="brand-logo">L</div>
+
+                    <h1>Think.<br>Ask.<br>Explore.</h1>
+
+                    <p>
+                        A simple space to explore ideas,
+                        ask questions, and get things done.
+                    </p>
+
+                    <div class="visual-decoration">
+                        <div class="orb orb-one"></div>
+                        <div class="orb orb-two"></div>
+                        <div class="orb orb-three"></div>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="auth-panel">
+
+                <div class="auth-brand">
+                    <div class="brand-logo small-logo">L</div>
+                    <span>LiteChatbot</span>
+                </div>
+
+                <div class="auth-heading">
+                    <h2 id="authTitle">Welcome back</h2>
+                    <p id="authSubtitle">
+                        Sign in to continue your conversations.
+                    </p>
+                </div>
+
+
+                <form id="authForm">
+
+                    <div class="form-group">
+                        <label for="email">Email address</label>
+
+                        <input
+                            type="email"
+                            id="email"
+                            placeholder="you@example.com"
+                            autocomplete="email"
+                            required
+                        >
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+
+                        <input
+                            type="password"
+                            id="password"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required
+                        >
+                    </div>
+
+
+                    <div id="authError" class="error-message"></div>
+
+
+                    <button
+                        type="submit"
+                        id="authSubmitBtn"
+                        class="primary-button"
+                    >
+                        Sign in
+                    </button>
+
+                </form>
+
+
+                <div class="auth-switch">
+                    <span id="authSwitchText">
+                        Don't have an account?
+                    </span>
+
+                    <button id="authSwitchBtn" type="button">
+                        Sign up
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= MAIN APP ================= -->
+
+    <div id="appScreen" class="app-screen hidden">
+
+
+        <!-- SIDEBAR -->
+
+        <aside id="sidebar" class="sidebar">
+
+            <div class="sidebar-top">
+
+                <div class="sidebar-brand">
+
+                    <div class="brand-logo small-logo">L</div>
+
+                    <span>LiteChatbot</span>
+
+                </div>
+
+
+                <button id="newChatBtn" class="new-chat-button">
+
+                    <span class="plus-icon">＋</span>
+
+                    <span>New chat</span>
+
+                </button>
+
+            </div>
+
+
+            <!-- CHAT HISTORY -->
+
+            <div class="history-container">
+
+                <div class="history-heading">
+                    Recent conversations
+                </div>
+
+                <div id="conversationList" class="conversation-list"></div>
+
+            </div>
+
+
+            <!-- SIDEBAR FOOTER -->
+
+            <div class="sidebar-bottom">
+
+                <div class="sidebar-footer">
+
+                    <div class="user-avatar" id="userAvatar">
+                        U
+                    </div>
+
+                    <div class="user-details">
+
+                        <span id="userName">User</span>
+
+                        <span class="user-status">
+                            Personal workspace
+                        </span>
+
+                    </div>
+
+                    <button
+                        id="logoutBtn"
+                        class="logout-button"
+                        title="Log out"
+                    >
+                        ↗
+                    </button>
+
+                </div>
+
+            </div>
+
+        </aside>
+
+
+        <!-- MOBILE BACKDROP -->
+
+        <div id="sidebarBackdrop" class="sidebar-backdrop"></div>
+
+
+        <!-- MAIN CHAT -->
+
+        <main class="chat-main">
+
+
+            <!-- HEADER -->
+
+            <header class="chat-header">
+
+                <button
+                    id="mobileMenuBtn"
+                    class="mobile-menu-button"
+                    title="Menu"
+                >
+                    ☰
+                </button>
+
+
+                <div class="header-left">
+
+                    <span class="header-title">
+                        Chat
+                    </span>
+
+                    <span class="header-badge">
+                        AI Assistant
+                    </span>
+
+                </div>
+
+
+                <div class="header-right">
+
+                    <!-- THEME SWITCH -->
+
+                    <button
+                        id="themeToggle"
+                        class="theme-toggle"
+                        title="Switch theme"
+                        aria-label="Switch theme"
+                    >
+                        ☀️
+                    </button>
+
+
+                    <div class="online-indicator"></div>
+
+                    <span>Ready</span>
+
+                </div>
+
+            </header>
+
+
+            <!-- CHAT AREA -->
+
+            <section id="chatArea" class="chat-area">
+
+
+                <!-- WELCOME -->
+
+                <div id="welcomeScreen" class="welcome-screen">
+
+                    <div class="welcome-icon">
+                        <div class="welcome-icon-inner">✦</div>
+                    </div>
+
+
+                    <h1>What can I help you with?</h1>
+
+                    <p>
+                        Ask anything. Explore ideas.
+                        Let's figure it out together.
+                    </p>
+
+
+                    <div class="suggestion-cards">
+
+
+                        <button
+                            class="suggestion-card"
+                            data-prompt="Explain a difficult concept to me in simple terms."
+                        >
+
+                            <div class="suggestion-icon purple">✦</div>
+
+                            <div>
+                                <strong>Learn something</strong>
+                                <span>Understand a concept simply</span>
+                            </div>
+
+                        </button>
+
+
+                        <button
+                            class="suggestion-card"
+                            data-prompt="Help me write something professional."
+                        >
+
+                            <div class="suggestion-icon blue">✎</div>
+
+                            <div>
+                                <strong>Write something</strong>
+                                <span>Emails, messages, and ideas</span>
+                            </div>
+
+                        </button>
+
+
+                        <button
+                            class="suggestion-card"
+                            data-prompt="Help me solve a problem step by step."
+                        >
+
+                            <div class="suggestion-icon orange">⌘</div>
+
+                            <div>
+                                <strong>Solve a problem</strong>
+                                <span>Break it down step by step</span>
+                            </div>
+
+                        </button>
+
+
+                        <button
+                            class="suggestion-card"
+                            data-prompt="Give me a useful idea for a project I can build."
+                        >
+
+                            <div class="suggestion-icon green">↗</div>
+
+                            <div>
+                                <strong>Explore an idea</strong>
+                                <span>Discover something interesting</span>
+                            </div>
+
+                        </button>
+
+
+                    </div>
+
+                </div>
+
+
+                <!-- MESSAGE CONTAINER -->
+
+                <div
+                    id="messagesContainer"
+                    class="messages-container"
+                ></div>
+
+            </section>
+
+
+            <!-- INPUT AREA -->
+
+            <footer class="composer-wrapper">
+
+
+                <div class="composer-container">
+
+                    <textarea
+                        id="messageInput"
+                        rows="1"
+                        placeholder="Message LiteChatbot..."
+                    ></textarea>
+
+
+                    <button
+                        id="sendBtn"
+                        class="send-button"
+                        title="Send message"
+                    >
+                        ↑
+                    </button>
+
+                </div>
+
+
+                <div class="composer-footer">
+                    LiteChatbot can make mistakes. Verify important information.
+                </div>
+
+            </footer>
+
+
+        </main>
+
+    </div>
+
+
+    <script src="script.js"></script>
+
+</body>
+</html>

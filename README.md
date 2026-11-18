@@ -1,0 +1,9 @@
+fastapi==0.162.0
+uvicorn==0.54.0
+SQLAlchemy==2.1.8
+psycopg[binary]==3.3.8
+python-dotenv==1.2.4
+google-genai==3.3.0
+tavily-python==0.8.5
+supabase==2.34.1
+pydantic==2.14.3
